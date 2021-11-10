@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_provider/constrained_center.dart';
+import 'package:flutter_provider/home_page_post.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
@@ -7,6 +9,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final posts = Provider.of<List<HomePagePost>>(context);
     return Scaffold(
       appBar: AppBar(),
       body: Align(
@@ -46,7 +49,10 @@ class HomePage extends StatelessWidget {
                 'Title',
                 style: Theme.of(context).textTheme.headline2,
               ),
-              HomeListTile(),
+              for (var post in posts)
+                HomeListTile(
+                  post: post,
+                ),
             ],
           ),
         ),
@@ -56,11 +62,12 @@ class HomePage extends StatelessWidget {
 }
 
 class HomeListTile extends StatelessWidget {
-  const HomeListTile({Key? key}) : super(key: key);
+  final HomePagePost post;
+
+  const HomeListTile({Key? key, required this.post}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final title = Provider.of<String>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -69,7 +76,7 @@ class HomeListTile extends StatelessWidget {
         ),
         InkWell(
           child: Text(
-            title,
+            post.title,
             style: TextStyle(
               color: Colors.blueAccent.shade700,
             ),
@@ -80,7 +87,7 @@ class HomeListTile extends StatelessWidget {
           height: 10,
         ),
         SelectableText(
-          '2021년 11월 9일',
+          DateFormat('d MMMM y').format(post.date),
           style: Theme.of(context).textTheme.caption,
         ),
       ],

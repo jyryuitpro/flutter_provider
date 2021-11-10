@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_provider/home_page.dart';
+import 'package:flutter_provider/home_page_post.dart';
 import 'package:provider/provider.dart';
 
 var theme = ThemeData(
@@ -42,8 +43,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<String>(
-      create: (BuildContext context) => 'What is provider?',
+    return MultiProvider(
+      providers: [
+        Provider<List<HomePagePost>>(create: (BuildContext context) => _homePagePosts),
+      ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: theme,
@@ -52,5 +55,10 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+final _homePagePosts = [
+  HomePagePost(title: 'What is provider?', date: DateTime(2021, 11, 10),),
+  HomePagePost(title: 'What is multi_provider?', date: DateTime(2021, 12, 10),),
+];
 
 
